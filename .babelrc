@@ -1,6 +1,9 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-0"
-  ]
+    "presets": [  
+        ["@babel/preset-env", {
+            "modules": false, "loose": true, "targets": {
+            "esmodules": true
+            } 
+        }] 
+    ]
 }
