@@ -109,6 +109,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    ignoreWidthChange: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data () {
@@ -167,6 +171,8 @@ export default {
     this.$_views = new Map()
     this.$_unusedViews = new Map()
     this.$_scrollDirty = false
+    this.$_previousWidth = -1
+    this.$_previousHeight = -1
 
     if (this.$isServer) {
       this.updateVisibleItems(false)
@@ -222,9 +228,16 @@ export default {
       }
     },
 
-    handleResize () {
+    handleResize (el) {
       this.$emit('resize')
-      if (this.ready) this.updateVisibleItems(false)
+      const clientWidth = el.clientWidth
+      const clientHeight = el.clientHeight
+      if ((clientWidth !== this.$_previousWidth && !this.ignoreWidthChange) || clientHeight !== this.$_previousHeight) {
+        this.$_previousWidth = clientWidth
+        this.$_previousHeight = clientHeight
+
+        if (this.ready) this.updateVisibleItems(false)
+      }
     },
 
     handleScroll (event) {
