@@ -8,6 +8,7 @@
       [`direction-${direction}`]: true,
     }"
     @scroll.passive="handleScroll"
+    v-observe-resize="handleResize"
   >
     <div
       v-if="$slots.before"
@@ -45,16 +46,14 @@
         name="after"
       />
     </div>
-
-    <ResizeObserver @notify="handleResize" />
   </div>
 </template>
 
 <script>
-import { ResizeObserver } from 'vue-resize'
 import { ObserveVisibility } from 'vue-observe-visibility'
 import ScrollParent from 'scrollparent'
 import config from '../config'
+import { ObserveResize } from '../resize-observer'
 import { props, simpleArray } from './common'
 import { supportsPassive } from '../utils'
 
@@ -63,12 +62,9 @@ let uid = 0
 export default {
   name: 'RecycleScroller',
 
-  components: {
-    ResizeObserver,
-  },
-
   directives: {
     ObserveVisibility,
+    ObserveResize,
   },
 
   props: {
